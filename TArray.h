@@ -4,21 +4,6 @@
 using namespace std;
 
 
-
-//class bad_range:public exception
-//{
-//public:
-//    const char* what() const noexcept override;
-//};
-//
-//
-//class bad_length :public exception
-//{
-//public:
-//     const char* what() const noexcept override;
-//};
-//
-
 class bad_range :public exception
 {
 public:
@@ -38,12 +23,6 @@ public:
         return "Неправильная длина массива!";
     }
 };
-
-
-
-
-
-
 
 
 template <typename T> class TArray 
@@ -71,24 +50,6 @@ public:
     int getLength() const;
     int findValue(T) const;
 };
-
-
-
-
-//const char* bad_range::what() const noexcept
-//{
-//    return "Выход индекса за пределы массива!";
-//}
-//
-//
-//const char* bad_length::what() const noexcept
-//{
-//    return "Неправильная длина массива!";
-//}
-//
-
-
-
 
 
 template <typename T>
