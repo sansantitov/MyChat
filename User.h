@@ -7,6 +7,8 @@ public:
 	User(); 
 	User(int, string, string, string); //id,login,psw,name; 
 	void setUser(int, string, string, string); //id,login,psw,name
+	void showUser();
+
     int getId();
     string getLogin();
     string getPsw();

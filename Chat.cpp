@@ -10,18 +10,20 @@ extern TArray<Msg> msgs;
 
  Chat::Chat()
  {
-     users[0].setUser(0,"admin","1","Admin");
-     //currentUserId = -1;
+     users[0].setUser(0,"All","1","All users");
+     _userIdLogin = -1;
+     _userIdCurrent = 0; //0-зарезервировано для выдачи всем
+     _msgIdCurrent = -1;
  }
 
 void Chat::addUser(string login, string password, string name)
 {
-    int id = users.getLength();
-    User* u = new User(id, login, password, name);
+    User* u = new User(++_userIdCurrent, login, password, name);
+    //if (users.getLength() == 1) users[0] = *u;
     users.insertAtEnd(*u);
 }
 
-int Chat::findUserId(string login, string password)
+int Chat::findUserIdByLoginPassword(string login, string password)
 {
     int id = -1;
     for (int i = 0; i < users.getLength(); ++i)
@@ -32,23 +34,51 @@ int Chat::findUserId(string login, string password)
             break;
         }
     }
-    //currentUserId = id;
+    _userIdLogin = id;
     return id;
 }
 
-void Chat::showUsers()
+string Chat::findUserNameByUserId(int idUser)
 {
-    rout("*** Id  Имя (Login) **************\n");
+    string name;
     for (int i = 0; i < users.getLength(); ++i)
     {
-        string name = users[i].getName();
-        string str = "    " + to_string(users[i].getId()) + "  " + users[i].getName() + "(" + users[i].getLogin() + ")\n";
-        cout << str;
+        if (users[i].getId() == idUser)
+        {
+            name = users[i].getName();
+            break;
+        }
     }
-    rout("********************************\n");
+    return name;
 }
 
-void Chat::sendMsg(int userIdFrom, int userIdDest, string message)
+
+
+
+void Chat::showUsers()
 {
-    
+    rout("*** Id  Имя **********************\n");
+    for (int i = 0; i < users.getLength(); ++i)
+    {
+        users[i].showUser();
+    }
+    cout << "********************************\n";
+}
+
+void Chat::sendMsg(int userIdTo, string message)
+{
+    string userName = findUserNameByUserId(_userIdLogin);
+    Msg* m = new Msg(++_msgIdCurrent, _userIdLogin, userName, userIdTo, message);
+    if (msgs.getLength() == 1) msgs[0] = *m;
+    else msgs.insertAtEnd(*m);
+}
+
+void Chat::showMsgs()
+{
+    rout   ("********* Принятые сообщения **************\n");
+    for (int i = 0; i < msgs.getLength(); ++i)
+    {
+        msgs[i].showMsg();
+    }
+    cout << "*******************************************\n";
 }

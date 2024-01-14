@@ -17,5 +17,3 @@ void rout(string text)
 
 
 
-
-

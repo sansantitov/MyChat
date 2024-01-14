@@ -1,3 +1,7 @@
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include "Msg.h"
 #include "TArray.h"
 #include "User.h"
@@ -8,6 +12,8 @@
 #ifdef _WIN32
 #include <Windows.h>
 #endif
+
+
 using namespace std;
 
 TArray<User> users(1);
@@ -15,6 +21,7 @@ TArray<Msg> msgs(1);
 
 int main()
 {
+    //_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #ifdef _WIN32
     int cp1 = GetConsoleCP();
     int cp2 = GetConsoleOutputCP();
@@ -22,34 +29,37 @@ int main()
     SetConsoleOutputCP(1251);
 #endif
     system("cls");
-
     Chat* chat = new Chat();
-    string login = "", password = "", name = "", message = "";
-    int rr, userIdFrom, userIdDest;
+    
+    
     bool isExit = false;
     while (!isExit)
     {
+        string login, password, name;
         cout << "login: ";
-        cin >> login;
+        getline(cin, login);
         cout << "password: ";
-        cin >> password;
-        int userIdFrom = chat->findUserId(login,password);
+        getline(cin, password);
+        int userIdFrom = chat->findUserIdByLoginPassword(login, password);
 
         if (userIdFrom < 0)
         {
-            rr = 0;
+            string rr;
             rout ("login-password не соответствуют пользователю!\n");
-            rout("повторить-1, регистрация-2, выход-0: ") ;
-            cin >> rr;
-            if (rr == 0) break;
-            if (rr == 1) continue;
+            while (!(rr.length() == 1 && strchr("012", rr[0])))
+            {
+                rout("повторить-1, регистрация-2, выход-0: ");
+                getline(cin, rr);
+            }
+            if (rr == "0") break;
+            if (rr == "1") continue;
             rout("*** регистрация ***\n");
             rout("login: ");
-            cin >> login;
+            getline(cin, login);
             rout("password: ");
-            cin >> password;
+            getline(cin, password);
             rout("имя: ");
-            cin >> name;
+            getline(cin, name);
             chat->addUser(login, password, name);
             rout("*** регистрация закончена ***\n");
             rout("войдите:\n");
@@ -57,30 +67,42 @@ int main()
         }
         while (true)
         {
-            rr = 0;
-            rout("сообщение личное-1, всем-2, авторизация-3, закончить-0: ") ;
-            cin >> rr;
-            userIdDest = 0;
-            if (rr == 0) {isExit = true; break;}
-            if (rr == 3) {break;}
-            if (rr == 1)
+            string message;
+            chat->showMsgs();
+
+            string rr;
+            string userIdTo;
+            
+            while (!(rr.length() == 1 && strchr("0123", rr[0])))
+            {
+                rout("сообщение личное-1, всем-2, авторизация (новый вход)-3, закончить-0: ");
+                getline(cin, rr);
+            }
+
+            if (rr == "0") {isExit = true; break;}
+            else if (rr == "3") {break;}
+            if (rr == "1") 
             {
                 chat->showUsers();
-                rout("адресат:\n");
-                cin >> userIdDest;
+                rout("Id адресата (всем-0):\n");
+                getline(cin, userIdTo);
             }
             rout("сообщение:\n");
-            cin >> message;
-            chat->sendMsg(userIdFrom, userIdDest, message);
+            getline(cin,message);
+            chat->sendMsg(rr=="1"?stoi(userIdTo):0, message);
             rout("*** отправлено ***\n");
         }
 
     }
 #ifdef _WIN32
-    //system("chcp 1251");
     SetConsoleCP(cp1);
     SetConsoleOutputCP(cp2);
 #endif
+    delete chat;
+    msgs.erase();
+    users.erase();
+
+    _CrtDumpMemoryLeaks();
     return 0;
 }
 

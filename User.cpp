@@ -1,4 +1,5 @@
 #include "User.h"
+#include <iostream>
 
 User::User()
 {
@@ -30,6 +31,12 @@ void User::setUser(int id, string login, string psw, string name)
 	_psw = psw;
 	_name = name;
 
+}
+
+void User::showUser()
+{
+	const string str = "     " + to_string( _id) + "  " + _name+"\n";
+	std::cout << str;
 }
 
 int User::getId()

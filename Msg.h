@@ -7,13 +7,16 @@ class Msg
 {
 public:
 	Msg();
-	void setMsg(int,string,int,int); //id, datetime, message, idFrom, idTo 
+	Msg(int, int, string, int, string); //id, idFrom, nameFrom, idTo, message 
+	void showMsg(); 
 private:
 	int _id;
-	tm _datetime;
+	char _datetime[100];
 	string _message;
-	int _from;
-	int _to;
+	int _idFrom;
+	string _nameFrom;
+	int _idTo;
+	
 	
 };
 
