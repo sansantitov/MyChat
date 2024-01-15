@@ -1,14 +1,12 @@
 #include "Msg.h"
 #include "Functions.h"
 #include <iostream>
+#include <ctime>
 
 Msg::Msg()
 {
-	time_t curTime = time(NULL);
-	tm curTM;
-	localtime_s(&curTM, &curTime);
-	strftime(_datetime, 100, "%d.%m.%C %T ", &curTM);
-	_id = 0;
+     _id = 0;
+    _datetime = getTime();
 	_message = "";
 	_idFrom = 0;
 	_nameFrom = "";
@@ -17,14 +15,11 @@ Msg::Msg()
 	
 }
 
-Msg::Msg(int id, int idFrom, string nameFrom, int idTo, string message)
+Msg::Msg(int id, int idFrom, std::string nameFrom, int idTo, std::string message)
 {
 	
-	time_t curTime = time(NULL);
-	tm curTM;
-	localtime_s(&curTM, &curTime);
-	strftime(_datetime, 100, "%d.%m.%C %T ", &curTM);
 	_id = id;
+    _datetime = getTime();
 	_message = message;
 	_idFrom = idFrom;
 	_nameFrom = nameFrom;
@@ -35,8 +30,29 @@ void Msg::showMsg()
 {
 	if (!_message.empty())
 	{
-		string dtStr = _datetime;
-		const string str = dtStr + " "+ _nameFrom + ":  " + _message + "\n";
+        std::string dtStr = _datetime;
+        const std::string str = dtStr + " "+ _nameFrom + ": " + _message + "\n";
 		std::cout << str;
 	}
 }
+
+std::string Msg::getTime()
+{
+    time_t now = time(NULL);
+    char str[26];
+    ctime_s(str, 26, &now);
+    std::string ss = str;
+    return ss.substr(11,8);
+}
+
+int Msg::getIdTo()
+{
+    return _idTo;
+}
+
+std::string Msg::getMessage()
+{
+    return _message;
+}
+
+

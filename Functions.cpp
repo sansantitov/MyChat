@@ -3,17 +3,19 @@
 #ifdef _WIN32
 #include <windows.h>
 #endif
-using namespace std;
 
-void rout(string text)
+
+void rout(std::string text)
 {
 #ifdef _WIN32
-    UINT cp = GetConsoleOutputCP();
+    int cp = GetConsoleOutputCP();
     SetConsoleOutputCP(65001);
-    cout << text;
+    std::cout << text;
     SetConsoleOutputCP(cp);
 #endif
 }
+
+
 
 
 

@@ -1,20 +1,19 @@
 #pragma once
-#include <string>
 #include <iostream>
-using namespace std;
-
-
 
 class Chat
 {
 public:
     Chat();
-	void addUser(string, string, string); //login, password, name
-    int findUserIdByLoginPassword(string, string); //login, password
-    string findUserNameByUserId(int);  //idUser
+    void addUser(std::string, std::string, std::string); //login, password, name
+    int findUserIdByLoginPassword(std::string, std::string); //login, password
+    std::string findUserNameByUserId(int);  //idUser
     void showUsers(); 
     void showMsgs();
-    void sendMsg(int, string); //userIdTo, message
+    void sendMsg(int, std::string); //userIdTo, message
+    int getUserIdCurrent();
+
+
 private:
     int _userIdLogin;
 	int _userIdCurrent;

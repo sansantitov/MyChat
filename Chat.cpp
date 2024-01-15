@@ -3,6 +3,7 @@
 #include "User.h"
 #include "Msg.h"
 #include "Functions.h"
+
 extern TArray<User> users;
 extern TArray<Msg> msgs;
 
@@ -16,14 +17,14 @@ extern TArray<Msg> msgs;
      _msgIdCurrent = -1;
  }
 
-void Chat::addUser(string login, string password, string name)
+void Chat::addUser(std::string login, std::string password, std::string name)
 {
     User* u = new User(++_userIdCurrent, login, password, name);
     //if (users.getLength() == 1) users[0] = *u;
     users.insertAtEnd(*u);
 }
 
-int Chat::findUserIdByLoginPassword(string login, string password)
+int Chat::findUserIdByLoginPassword(std::string login, std::string password)
 {
     int id = -1;
     for (int i = 0; i < users.getLength(); ++i)
@@ -38,9 +39,9 @@ int Chat::findUserIdByLoginPassword(string login, string password)
     return id;
 }
 
-string Chat::findUserNameByUserId(int idUser)
+std::string Chat::findUserNameByUserId(int idUser)
 {
-    string name;
+    std::string name;
     for (int i = 0; i < users.getLength(); ++i)
     {
         if (users[i].getId() == idUser)
@@ -62,23 +63,33 @@ void Chat::showUsers()
     {
         users[i].showUser();
     }
-    cout << "********************************\n";
+    std::cout << "********************************\n";
 }
 
-void Chat::sendMsg(int userIdTo, string message)
+void Chat::sendMsg(int userIdTo, std::string message)
 {
-    string userName = findUserNameByUserId(_userIdLogin);
+    std::string userName = findUserNameByUserId(_userIdLogin);
     Msg* m = new Msg(++_msgIdCurrent, _userIdLogin, userName, userIdTo, message);
-    if (msgs.getLength() == 1) msgs[0] = *m;
+    if (msgs.getLength() == 1 && msgs[0].getMessage()=="") msgs[0] = *m;
     else msgs.insertAtEnd(*m);
 }
 
 void Chat::showMsgs()
 {
-    rout   ("********* Принятые сообщения **************\n");
+    std::string userName = findUserNameByUserId(_userIdLogin);
+    std::cout << "******** " << userName << ": ";
+    rout   ("принятые сообщения *******\n");
     for (int i = 0; i < msgs.getLength(); ++i)
     {
-        msgs[i].showMsg();
+        if (msgs[i].getIdTo() == 0 || msgs[i].getIdTo() == _userIdLogin) msgs[i].showMsg();
     }
-    cout << "*******************************************\n";
+    std::string s(37+userName.length(), '*');
+    std::cout << s << std::endl;
 }
+
+int Chat::getUserIdCurrent()
+{
+    return _userIdCurrent;
+}
+
+

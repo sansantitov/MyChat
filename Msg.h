@@ -1,22 +1,22 @@
 #pragma once
-//#include <iostream>
-#include <string>
-#include <ctime>
-using namespace std;
+#include <iostream>
+
 class Msg
 {
 public:
 	Msg();
-	Msg(int, int, string, int, string); //id, idFrom, nameFrom, idTo, message 
-	void showMsg(); 
+    Msg(int, int, std::string, int, std::string); //id, idFrom, nameFrom, idTo, message
+    void showMsg();
+    std::string getTime();
+    int getIdTo();
+    std::string getMessage();
+
 private:
 	int _id;
-	char _datetime[100];
-	string _message;
+    std::string _datetime;
+    std::string _message;
 	int _idFrom;
-	string _nameFrom;
+    std::string _nameFrom;
 	int _idTo;
-	
-	
 };
 

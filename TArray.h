@@ -1,10 +1,9 @@
 ﻿#pragma once
 #include <exception>
 #include <iostream>
-using namespace std;
 
 
-class bad_range :public exception
+class bad_range :public std::exception
 {
 public:
     const char* what() const noexcept
@@ -15,7 +14,7 @@ public:
 };
 
 
-class bad_length :public exception
+class bad_length :public std::exception
 {
 public:
     const char* what() const noexcept
@@ -60,9 +59,9 @@ TArray<T>::TArray(int length):m_length{ length }
     {
         if (length <= 0) throw bad_length();
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        cout << e.what();
+        std::cout << e.what();
         exit(1);
     }
     m_data = new T[length]{};
@@ -105,9 +104,9 @@ T& TArray<T>::operator[](int index)
     {
         if (index < 0 || index >= m_length) throw bad_range();
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        cout << e.what();
+        std::cout << e.what();
         exit(1);
     }
     return m_data[index];
@@ -200,9 +199,9 @@ void TArray<T>::insertBefore(T value, int index)
     {
         if (index < 0 || index > m_length) throw bad_range();
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        cout << e.what();
+        std::cout << e.what();
         exit(1);
     }
 
@@ -235,9 +234,9 @@ void TArray<T>::remove(int index)
     {
         if (index < 0 || index >= m_length) throw bad_range();
     }
-    catch (exception& e)
+    catch (std::exception& e)
     {
-        cout << e.what();
+        std::cout << e.what();
         exit(1);
     }
 
