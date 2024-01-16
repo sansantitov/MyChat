@@ -58,10 +58,14 @@ std::string Chat::findUserNameByUserId(int idUser)
 
 void Chat::showUsers()
 {
+    
     rout("*** Id  Имя **********************\n");
-    for (int i = 0; i < users.getLength(); ++i)
+    if (users.getLength() > 1)
     {
-        users[i].showUser();
+        for (int i = 1; i < users.getLength(); ++i)
+        {
+            users[i].showUser();
+        }
     }
     std::cout << "********************************\n";
 }
@@ -91,5 +95,89 @@ int Chat::getUserIdCurrent()
 {
     return _userIdCurrent;
 }
+
+
+int Chat::getUserIdLogin()
+{
+    return _userIdLogin;
+}
+
+
+void Chat::registr()
+{
+    std::string login, password, name;
+    rout("*** Регистрация нового пользователя ***\n");
+
+    while (true)
+    {
+
+        rout("логин нового пользователя: ");
+        getline(std::cin, login);
+        if (login.length() < 2) rout ("в логине должно быть не менее двух символов!\n");
+        else break;
+    }
+    rout("пароль: ");
+    getline(std::cin, password);
+    rout("имя: ");
+    getline(std::cin, name);
+    addUser(login, password, name);
+    rout("******** регистрация закончена ********\n");
+}
+
+
+std::string Chat::login()
+{
+    std::string rr;
+    bool isExit = false;
+    rout("Для авторизации введите логин или \"4\"-для регистрация нового пользователя\n");
+    while (!isExit)
+    {
+        std::string login, password;
+        int id;
+        while (true)
+        {
+            
+            rout("логин: ");
+            getline(std::cin, login);
+            if (login == "4")
+            {
+                rr = "4";
+                break;
+            }
+            else if (login.length() < 2) rout ("в логине должно быть не менее двух символов!\n");
+            else break;
+        }
+
+        if (rr != "4")
+        {
+            rout("пароль: ");
+            getline(std::cin, password);
+            id = findUserIdByLoginPassword(login, password);
+            if (id < 0)
+            {
+                rout("логин-пароль не соответствуют ни одному пользователю!\n");
+                rr = choice("повторить-1, регистрация нового-4, выход-0: ", "140");
+                if (rr != "1") break;
+            }
+            else
+            {
+                isExit = true;
+                break;
+            }
+                
+        }
+        else break;
+    }
+    return rr;
+}
+
+
+
+
+
+
+
+
+
 
 

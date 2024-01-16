@@ -12,7 +12,9 @@ public:
     void showMsgs();
     void sendMsg(int, std::string); //userIdTo, message
     int getUserIdCurrent();
-
+    void registr();
+    int getUserIdLogin();
+    std::string login();
 
 private:
     int _userIdLogin;
