@@ -1,7 +1,3 @@
-// #define _CRTDBG_MAP_ALLOC
-// #include <stdlib.h>
-// #include <crtdbg.h>
-
 #include "Msg.h"
 #include "TArray.h"
 #include "User.h"
@@ -12,11 +8,8 @@
 #include <Windows.h>
 #endif
 
-
-
-
-TArray<User> users(1);
-TArray<Msg> msgs(1);
+TArray<User> users(1); //класс пользователей на основе шаблона TArray<User>
+TArray<Msg> msgs(1); //класс сообщений на основе шаблона TArray<Msg>
 
 int main()
 {
@@ -29,56 +22,56 @@ int main()
     system("cls");
     Chat* chat = new Chat();
     bool isExit = false;
-    //"0" - выход
-    //"1" - сообщение
-    
-    //"3" - вход-авторизация(логин-пароль)
-    //"4" - регистрация нового пользователя (логин-пароль-имя)
 
 
     while (!isExit)
     {
-        std::string rr;
+        std::string strChoice;
+        //strChoice = "0" - выход
+        //strChoice = "1" - сообщение
+        //strChoice = "3" - вход-авторизация(логин-пароль)
+        //strChoice = "4" - регистрация нового пользователя (логин-пароль-имя)
+
         
         while (!isExit)
         {
-            rr = chat->login();
-            if (rr == "0")
+            strChoice = chat->login(); //авторизация
+            if (strChoice == "0") //на выход
             {
                 isExit = true;
                 break;
             }
-            else if (rr == "4") chat->registr();
-            else break; //нормальная авторизация
+            else if (strChoice == "4") chat->registr(); //регистрация
+            else break; //авторизация прошла
         }
 
 
         while (true)
         {
             std::string message;
-            chat->showMsgs();
+            chat->showMsgs(); //отоюражение всех сообщений для авторизованного пользователя
 
-            std::string userIdTo;
+            std::string strUserTo; //для выбора Id пользователя-адресата
+            int intUserTo = 0; //Id пользователя - целое
 
+            std::string strChoice1 = choice("послать сообщение-1, авторизация (новый вход)-3, закончить-0: ", "130");
 
-            std::string rr = choice("сообщение-1, авторизация (новый вход)-3, закончить-0: ", "130");
+            if (strChoice1 == "0") {isExit = true; break;} //на выход
+            else if (strChoice1 == "3") {break;} //на авторизацию
 
-            if (rr == "0") {isExit = true; break;}
-            else if (rr == "3") {break;}
-            int intUser = 0;
-            if (rr == "1")
+            if (strChoice1 == "1") //сообщение
             {
                 while (true)
                 {
-                    chat->showUsers();
-                    rout("Id адресата (всем-0): ");
-                    getline(std::cin, userIdTo);
-                    intUser = stoi(userIdTo);
-                    if (userIdTo == "0" || (intUser > 0 && intUser <= chat->getUserIdCurrent())) break;
+                    chat->showUsers(); //отображение пользователей для выбора Id адресата - кому послать или 0-для всех
+                    rout("Кому послать (ID адресата)? (послать всем-0): ");
+                    getline(std::cin, strUserTo); //ввод Id адресата
+                    intUserTo = strUserTo.length()==1 && is_number(strUserTo)? stoi(strUserTo):-1;
+                    if (chat->findUserNameByUserId(intUserTo) != "") break; //есть такой пользовьтель
                 }
                 rout("сообщение: ");
-                getline(std::cin,message);
-                chat->sendMsg(rr=="1"?intUser:0, message);
+                getline(std::cin,message); //ввод сообщения
+                chat->sendMsg(intUserTo, message); //запись сообщения
             }
         }
 
@@ -91,7 +84,6 @@ int main()
     msgs.erase();
     users.erase();
 
-    //_CrtDumpMemoryLeaks();
     return 0;
 }
 

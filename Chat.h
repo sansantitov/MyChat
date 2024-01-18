@@ -4,22 +4,22 @@
 class Chat
 {
 public:
-    Chat();
-    void addUser(std::string, std::string, std::string); //login, password, name
-    int findUserIdByLoginPassword(std::string, std::string); //login, password
-    std::string findUserNameByUserId(int);  //idUser
-    void showUsers(); 
-    void showMsgs();
-    void sendMsg(int, std::string); //userIdTo, message
-    int getUserIdCurrent();
-    void registr();
-    int getUserIdLogin();
-    std::string login();
+    Chat(); //конструктор
+    int findUserLogin(std::string login); //поиск ID пользователя по логину
+    void addUser(std::string login, std::string password, std::string name); //добавление пользоваьеля
+    int findUserIdByLoginPassword(std::string login, std::string password); //поиск ID пользователя по логину-паролю
+    std::string findUserNameByUserId(int idUser);  //поиск имени пользователя по ID пользователя
+    void showUsers(); //отображение пользователей
+    void showMsgs(); //отображение сообщений для текущего пользоваеля
+    void sendMsg(int userIdTo, std::string message); //запись сообщения для "пересылки"
+    void registr(); //регистрация нового пользователя
+    int getUserIdLogin(); //получение ID текущего пользователя
+    std::string login(); //авторизация пользователя по логину-паролю
 
 private:
-    int _userIdLogin;
-	int _userIdCurrent;
-    int _msgIdCurrent;
+    int _userIdLogin; //ID текущего пользователя
+    int _userIdMax; //максимальное (последнее) значение ID зарегистрированного пользователя
+    int _msgIdMax; //максимальное (последнее) значение ID записанного сообщения
 	
 };
 

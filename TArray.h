@@ -24,7 +24,7 @@ public:
 };
 
 
-template <typename T> class TArray 
+template <typename T> class TArray //шаблон класса динамического массива
 {
     
 private:
