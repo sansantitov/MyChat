@@ -38,6 +38,7 @@ int main()
             strChoice = chat->login(); //авторизация
             if (strChoice == "0") //на выход
             {
+                
                 isExit = true;
                 break;
             }
@@ -45,36 +46,37 @@ int main()
             else break; //авторизация прошла
         }
 
-
-        while (true)
+        if (!isExit)
         {
-            std::string message;
-            chat->showMsgs(); //отоюражение всех сообщений для авторизованного пользователя
-
-            std::string strUserTo; //для выбора Id пользователя-адресата
-            int intUserTo = 0; //Id пользователя - целое
-
-            std::string strChoice1 = choice("послать сообщение-1, авторизация (новый вход)-3, закончить-0: ", "130");
-
-            if (strChoice1 == "0") {isExit = true; break;} //на выход
-            else if (strChoice1 == "3") {break;} //на авторизацию
-
-            if (strChoice1 == "1") //сообщение
+            while (true)
             {
-                while (true)
+                std::string message;
+                chat->showMsgs(); //отоюражение всех сообщений для авторизованного пользователя
+
+                std::string strUserTo; //для выбора Id пользователя-адресата
+                int intUserTo = 0; //Id пользователя - целое
+
+                std::string strChoice1 = choice("послать сообщение-1, авторизация (новый вход)-3, закончить-0: ", "130");
+
+                if (strChoice1 == "0") { isExit = true; break; } //на выход
+                else if (strChoice1 == "3") { break; } //на авторизацию
+
+                if (strChoice1 == "1") //сообщение
                 {
-                    chat->showUsers(); //отображение пользователей для выбора Id адресата - кому послать или 0-для всех
-                    rout("Кому послать (ID адресата)? (послать всем-0): ");
-                    getline(std::cin, strUserTo); //ввод Id адресата
-                    intUserTo = strUserTo.length()==1 && is_number(strUserTo)? stoi(strUserTo):-1;
-                    if (chat->findUserNameByUserId(intUserTo) != "") break; //есть такой пользовьтель
+                    while (true)
+                    {
+                        chat->showUsers(); //отображение пользователей для выбора Id адресата - кому послать или 0-для всех
+                        rout("Кому послать (ID адресата)? (послать всем-0): ");
+                        getline(std::cin, strUserTo); //ввод Id адресата
+                        intUserTo = strUserTo.length() == 1 && is_number(strUserTo) ? stoi(strUserTo) : -1;
+                        if (chat->findUserNameByUserId(intUserTo) != "") break; //есть такой пользовьтель
+                    }
+                    rout("сообщение: ");
+                    getline(std::cin, message); //ввод сообщения
+                    chat->sendMsg(intUserTo, message); //запись сообщения
                 }
-                rout("сообщение: ");
-                getline(std::cin,message); //ввод сообщения
-                chat->sendMsg(intUserTo, message); //запись сообщения
             }
         }
-
     }
 #ifdef _WIN32
     SetConsoleCP(cp1);
