@@ -11,6 +11,7 @@ add_executable(_MyChat main.cpp
     Msg.cpp Msg.h
     Chat.cpp Chat.h
     Functions.cpp Functions.h
+    README.md
 
 
 
